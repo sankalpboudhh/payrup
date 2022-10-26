@@ -11,7 +11,7 @@ passport.use(
     },
     async (username, password, done) => {
       try {
-        const user = await UserModel.findOne({ email: username });
+        const user = await UserModel.findOne({ username });
 
         if (!user) {
           return done(

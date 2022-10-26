@@ -2,10 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const passport = require("passport");
 
-//
 require("./auth/auth");
+
 const routes = require("./routes/routes");
+const secureRoute = require("./routes/secure-routes");
+
 const UserModel = require("./model/model");
 require("dotenv").config();
 
@@ -20,6 +23,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", routes);
+
+app.use("/user", passport.authenticate("jwt", { session: false }), secureRoute);
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
